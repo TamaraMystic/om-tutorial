@@ -89,8 +89,8 @@
 (defui Person
   Object
   (render [this]
-    (let [{:keys [name]} (om/props this)]
-      (dom/li nil name))))
+    (let [{:keys [name age]} (om/props this)]
+      (dom/li nil (map str [name age])))))
 
 (def person (om/factory Person {:keyfn :name}))
 
@@ -147,7 +147,7 @@
   and also try playing with editing/adding to the DOM.
   ")
 
-(defcard root-render (root {:number 52 :people [{:name "Sam"} {:name "Joe"}]}))
+(defcard root-render (root {:number 52 :people [{:name "Sam"} {:name "Joe"} {:name "Jimmy" :age 25}]}))
 
 (defui Root-computed
   Object
@@ -205,7 +205,7 @@
                          :boolHandler (fn [] (swap! data-atom-from-devcards update-in [:b] not))}
           ]
       (root-computed (om/computed prop-data sideband-data))))
-  {:number 42 :people [{:name "Sally"}] :b false}
+  {:number 42 :people [{:name "Sally"} {:name "Jimmy" :age 25}] :b false}
   {:inspect-data true
    :history      true})
 

@@ -38,7 +38,7 @@
   ")
 
 (defcard sample-card
-         (dom/div nil "The following number is calculated: " (+ 3 4))
+         (dom/div nil "The following number is calculated: " (+ 3 6))
          )
 
 (defcard-doc
