@@ -70,20 +70,20 @@
 
 (defui Person
   Object
-  (initLocalState [this] {})                                ;; TODO (ex 3): Add initial local state here
-
+  (initLocalState [this] {:checked true})                                ;; TODO (ex 3): Add initial local state here
   (render [this]
     ; TODO: (ex 4) obtain the 'computed' onDelete handler
     (let [{:keys [person/name person/mate]} (om/props this)                                     ;; TODO (ex 1): Get the Om properties from this
 
-          checked false]                                    ;; TODO (ex 3): component local state
+          {:keys [checked]} (om/get-state this)] ;; TODO (ex 3): component local state
       (dom/li nil
         (dom/input #js {:type    "checkbox"
-                        :onClick (fn [e] (println "TODO ex 3"))
-                        :checked false                      ; TODO: ex-3: modify local state
+                        :onClick (fn [e] (om/update-state! this :checked false))
+                        :checked checked                     ; TODO: ex-3: modify local state
                         })
-        (dom/span nil name)                                 ; TODO: ex 3. Make name bold when checked
+        (dom/span nil (str name "b"))                                 ; TODO: ex 3. Make name bold when checked
         (dom/button nil "X")                                ; TODO: (ex 4) call onDelete handler, if present
+              (.log js/console checked)
         (when mate (dom/ul nil (om-person mate)))))))
 
 (def om-person (om/factory Person))
@@ -108,7 +108,7 @@
   Object
   (render [this]
     ; TODO: (ex 4): Create a deletePerson function
-    (let [people []]                                        ; TODO (ex 2): Get yo stuff
+    (let [{:keys [people]} (om/props this)]                                        ; TODO (ex 2): Get yo stuff
       (dom/div nil
         (if (= nil people)
           (dom/span nil "Loading...")
@@ -123,9 +123,7 @@
 (defui Root
   Object
   (render [this]
-    (let [widget nil
-          new-person nil
-          last-error nil]                                   ; TODO (ex 2): Get yo stuff
+    (let [{:keys [widget new-person last-error]} (om/props this)]                                   ; TODO (ex 2): Get yo stuff
       (dom/div nil
         (dom/div nil (when (not= "" last-error) (str "Error " last-error)))
         (dom/div nil
